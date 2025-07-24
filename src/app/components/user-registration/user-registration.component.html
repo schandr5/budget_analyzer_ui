@@ -1,0 +1,37 @@
+<div class="registration-background">
+  <div class="registration-form-container">
+    <div class="login-link">
+      Already a user? <a routerLink="/login">Log in</a>
+    </div>
+
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <h2>Let's help you stay on budget</h2>
+
+      <div class="form-field">
+        <label for="name">Full Name</label>
+        <input id="name" formControlName="name" placeholder="Enter your full name" />
+        <div *ngIf="registrationForm?.get('name')?.invalid && registrationForm?.get('name')?.touched" class="error">
+          Full name is required
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="userName">Username</label>
+        <input id="userName" formControlName="userName" placeholder="Choose a username" />
+        <div *ngIf="registrationForm?.get('userName')?.invalid && registrationForm?.get('userName')?.touched" class="error">
+          Username is required
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" placeholder="Create a password" />
+        <div *ngIf="registrationForm?.get('password')?.invalid && registrationForm?.get('password')?.touched" class="error">
+          Password is required
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="registrationForm.invalid">Get Started</button>
+    </form>
+  </div>
+</div>
