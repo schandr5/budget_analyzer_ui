@@ -1,0 +1,63 @@
+<div class="budget-background">
+  <div class="budget-form-container">
+    <div class="login-link">
+      Already set up? <a routerLink="/dashboard">Go to Dashboard</a>
+    </div>
+
+    <form [formGroup]="budgetForm" (ngSubmit)="onSubmit()">
+      <h2>Set Up Your Budget</h2>
+
+      <div class="form-field">
+        <label for="budgetAllocated">Monthly Budget</label>
+        <input
+          id="budgetAllocated"
+          type="number"
+          formControlName="budget_allocated"
+          placeholder="Enter your total budget"
+          min="0"
+        />
+        <div *ngIf="budgetForm?.get('budget_allocated')?.invalid && budgetForm?.get('budget_allocated')?.touched" class="error">
+          Budget is required
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field half">
+          <label for="startDate">Start Date</label>
+          <input
+            id="startDate"
+            type="date"
+            formControlName="start_date"
+          />
+          <div *ngIf="budgetForm?.get('start_date')?.invalid && budgetForm?.get('start_date')?.touched" class="error">
+            Start date required
+          </div>
+        </div>
+        <div class="form-field half">
+          <label for="endDate">End Date</label>
+          <input
+            id="endDate"
+            type="date"
+            formControlName="end_date"
+          />
+          <div *ngIf="budgetForm?.get('end_date')?.invalid && budgetForm?.get('end_date')?.touched" class="error">
+            End date required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="budgetRemaining">Budget Remaining</label>
+        <input
+          id="budgetRemaining"
+          type="number"
+          formControlName="budget_remaining"
+          placeholder="Will be set automatically"
+          [readonly]="true"
+        />
+      </div>
+
+      <button type="submit" [disabled]="budgetForm.invalid">Set Budget</button>
+    </form>
+  </div>
+</div>

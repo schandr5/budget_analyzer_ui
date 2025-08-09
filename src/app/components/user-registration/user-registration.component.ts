@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-user-registration',
@@ -15,12 +16,14 @@ export class UserRegistrationComponent {
   registrationForm: FormGroup;
 
   constructor(private fb: FormBuilder,
-    private userService: UserService) {
-    this.registrationForm = this.fb.group({
-      name: ['', Validators.required],
-      userName: ['', Validators.required],
-      password: ['', Validators.required]
-    });
+    private userService: UserService,
+    private sharedService: SharedService,
+    private router: Router) {
+      this.registrationForm = this.fb.group({
+        name: ['', Validators.required],
+        userName: ['', Validators.required],
+        password: ['', Validators.required]
+      });
   }
 
   get name() {
@@ -41,6 +44,8 @@ export class UserRegistrationComponent {
       this.userService.createUser(this.registrationForm.value).subscribe({
         next: (res) => {          
           console.log('Successfully registered the user' + res.name);
+          this.sharedService.setUserDetails(res);
+          this.router.navigate(['/set-budget']);
         },
         error: (err) => {
           console.log('Failed to register the user');

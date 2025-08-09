@@ -16,3 +16,24 @@ export interface Credentials {
     userName: string;
     password: string;
 }
+
+// Budget setup details for new user
+export interface BudgetSetupInput {
+    id: number;
+    start_date: Date;
+    end_date: Date;
+    budget_allocated: number;
+    budget_remaining: number;
+}
+
+// Response type from backend for setupBudget query.
+export interface BudgetDetails {
+    budget_id : number;
+    id: number;
+    start_date: Date;
+    end_date: Date;
+    budget_allocated: number;
+    budget_remaining: number;
+}
+
+

@@ -19,3 +19,16 @@ export const LOGIN_USER = gql`
         }    
     }
 `;
+
+export const SETUP_BUDGET_NEW_USER = gql `
+    mutation setBudget($budgetSetupInput: BudgetSetupInput!) {
+        setupBudgetForNewUser(budgetSetupInput : $budgetSetupInput) {
+            budget_id
+            id
+            start_date
+            end_date
+            budget_allocated
+            budget_remaining        
+        }    
+    }
+`;
