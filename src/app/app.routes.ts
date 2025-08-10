@@ -7,5 +7,5 @@ export const routes: Routes = [
   { path: '', component: UserRegistrationComponent },
   { path: 'register', component: UserRegistrationComponent },
   { path: 'login', component: UserLoginComponent },
-  { path: 'set-budget', component: SetBudgetComponent }
+  { path: 'budget-setup', component: SetBudgetComponent }
 ];

@@ -46,15 +46,9 @@
         </div>
       </div>
 
-      <div class="form-field">
+      <div class="form-field" *ngIf="!isNewUser">
         <label for="budgetRemaining">Budget Remaining</label>
-        <input
-          id="budgetRemaining"
-          type="number"
-          formControlName="budget_remaining"
-          placeholder="Will be set automatically"
-          [readonly]="true"
-        />
+        <input id="budgetRemaining" type="number" formControlName="budget_remaining" placeholder="Will be set automatically" [readonly]="true"/>
       </div>
 
       <button type="submit" [disabled]="budgetForm.invalid">Set Budget</button>

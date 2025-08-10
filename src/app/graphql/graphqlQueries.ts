@@ -28,7 +28,7 @@ export const SETUP_BUDGET_NEW_USER = gql `
             start_date
             end_date
             budget_allocated
-            budget_remaining        
+            budget_remaining
         }    
     }
 `;

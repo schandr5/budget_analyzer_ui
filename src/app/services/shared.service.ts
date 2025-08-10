@@ -15,7 +15,7 @@ export class SharedService {
       this.userDetails = userDetails;
   }
 
-  public getUserDetails() : Observable<UserDetails> {
-    return of(this.userDetails);
+  public getUserDetails() : UserDetails {
+    return this.userDetails;
   }
 }

@@ -31,7 +31,7 @@ export class UserLoginComponent {
         next: (res) => {
           console.log('User login completed successfully' + res.name);
           this.sharedService.setUserDetails(res);
-          this.router.navigate(['/set-budget']);
+          this.router.navigate(['/budget-setup']);
         },
         error: (err) => {
           console.log('User login failed');

@@ -43,9 +43,9 @@ export class UserRegistrationComponent {
       console.log('Trying to register user');
       this.userService.createUser(this.registrationForm.value).subscribe({
         next: (res) => {          
-          console.log('Successfully registered the user' + res.name);
+          console.log('Successfully registered the user: ' + res.name);
           this.sharedService.setUserDetails(res);
-          this.router.navigate(['/set-budget']);
+          this.router.navigate(['/budget-setup'], {queryParams : {'isNewUser' : true} })
         },
         error: (err) => {
           console.log('Failed to register the user');

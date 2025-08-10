@@ -20,8 +20,8 @@ export interface Credentials {
 // Budget setup details for new user
 export interface BudgetSetupInput {
     id: number;
-    start_date: Date;
-    end_date: Date;
+    start_date: string;
+    end_date: string;
     budget_allocated: number;
     budget_remaining: number;
 }
@@ -30,8 +30,8 @@ export interface BudgetSetupInput {
 export interface BudgetDetails {
     budget_id : number;
     id: number;
-    start_date: Date;
-    end_date: Date;
+    start_date: string;
+    end_date: string;
     budget_allocated: number;
     budget_remaining: number;
 }
