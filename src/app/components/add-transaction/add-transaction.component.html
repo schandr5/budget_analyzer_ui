@@ -1,0 +1,121 @@
+<div class="transaction-container">
+  <!-- Header Section -->
+  <div class="header">
+    <div class="welcome-section">
+      <h1>Transaction Management</h1>
+      <p class="subtitle">Track your spending and manage your budget</p>
+    </div>
+    <div class="budget-info">
+      <a routerLink="/budget-setup" class="back-link">← Back to Budget Setup</a>
+      <div class="budget-card">
+        <div class="budget-label">Budget Remaining</div>
+        <div class="budget-amount">
+          ${{ budgetRemaining.toFixed(2) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Transaction Form -->
+  <div class="form-card">
+    <h2>Add New Transaction</h2>
+    <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="transactionDate">Date</label>
+          <input 
+            type="date" 
+            id="transactionDate" 
+            formControlName="transactionDate"
+            [class.invalid]="transactionDate?.invalid && transactionDate?.touched">
+          <div class="error-message" *ngIf="transactionDate?.invalid && transactionDate?.touched">
+            Date is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="transactionCategory">Category</label>
+          <select 
+            id="transactionCategory" 
+            formControlName="transactionCategory"
+            [class.invalid]="transactionCategory?.invalid && transactionCategory?.touched">
+            <option value="" disabled>Select a category</option>
+            <option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="transactionCategory?.invalid && transactionCategory?.touched">
+            Please select a category
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="transactionAmount">Amount ($)</label>
+          <input 
+            type="number" 
+            id="transactionAmount" 
+            formControlName="transactionAmount"
+            placeholder="0.00"
+            step="0.01"
+            [class.invalid]="transactionAmount?.invalid && transactionAmount?.touched">
+          <div class="error-message" *ngIf="transactionAmount?.invalid && transactionAmount?.touched">
+            <span *ngIf="transactionAmount?.errors?.['required']">Amount is required</span>
+            <span *ngIf="transactionAmount?.errors?.['min']">Amount must be greater than 0</span>
+          </div>
+        </div>
+
+        <div class="form-group submit-group">
+          <button 
+            type="submit" 
+            class="submit-btn"
+            [disabled]="transactionForm.invalid">
+            Add Transaction
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <h2>Transaction History</h2>
+      <div class="total-spent" *ngIf="transactions.length > 0">
+        Total Spent: <strong>${{ getTotalSpent().toFixed(2) }}</strong>
+      </div>
+    </div>
+
+    <div *ngIf="transactions.length === 0" class="empty-state">
+      <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 3h18v18H3z M3 9h18 M9 3v18" stroke-linejoin="round"/>
+      </svg>
+      <p>No transactions yet</p>
+      <span>Add your first transaction above to start tracking your spending</span>
+    </div>
+
+    <div *ngIf="transactions.length > 0" class="table-wrapper">
+      <table class="transactions-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ formatDate(transaction.transactionDate) }}</td>
+            <td>
+              <span class="category-badge" [attr.data-category]="transaction.transactionCategory">
+                {{ transaction.transactionCategory }}
+              </span>
+            </td>
+            <td class="amount-cell">${{ transaction.transactionAmount.toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

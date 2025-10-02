@@ -1,11 +1,11 @@
 import { gql } from 'apollo-angular';
 
-// Query for registration of new user
+// Mutation for registration of new user
 export const CREATE_USER = gql`
     mutation createUser($newUser: UserInput!) {
         addUser(newUser: $newUser) {
             id
-            name
+            userName
         }    
     }
 `;
@@ -15,20 +15,35 @@ export const LOGIN_USER = gql`
     query loginUser($credentials: Credentials!) {
         authenticateUser(credentials: $credentials) {
             id
-            name        
+            userName        
         }    
     }
 `;
 
+// Mutation to setup budget for new user
 export const SETUP_BUDGET_NEW_USER = gql `
     mutation setBudget($budgetSetupInput: BudgetSetupInput!) {
         setupBudgetForNewUser(budgetSetupInput : $budgetSetupInput) {
-            budget_id
+            budgetId
             id
-            start_date
-            end_date
-            budget_allocated
-            budget_remaining
+            startDate
+            endDate
+            budgetAllocated
+            budgetRemaining
         }    
+    }
+`;
+
+// Query to fetch budget details for existing user
+export const FETCH_BUDGET_DETAILS_FOR_EXISTING_USER = gql`
+    query fetcheBudgetDetails($id: ID!) {
+        fetchBudgetDetailsForExistingUser(id: $id) {
+            budgetId
+            id
+            startDate
+            endDate
+            budgetAllocated
+            budgetRemaining
+        }
     }
 `;

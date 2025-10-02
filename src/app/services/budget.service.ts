@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { BudgetDetails, BudgetSetupInput } from '../constants/interface';
 import { map, Observable } from 'rxjs';
-import { SETUP_BUDGET_NEW_USER } from '../graphql/graphqlQueries';
+import { FETCH_BUDGET_DETAILS_FOR_EXISTING_USER, SETUP_BUDGET_NEW_USER } from '../graphql/graphqlQueries';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +20,21 @@ export class BudgetSetupService {
         }
     }).pipe(map(result => result.data!.setupBudgetForNewUser));
 
+  }
+
+  fetchBudgetDetailsForExistingUser(id: number): Observable<BudgetDetails> {
+    console.log('Fetching budget details for user ID:', id);
+    return this.apollo.query<{fetchBudgetDetailsForExistingUser: BudgetDetails}>({
+      query: FETCH_BUDGET_DETAILS_FOR_EXISTING_USER,
+      variables: {
+        id: id
+      },
+      fetchPolicy: 'network-only' // Force fresh data from backend
+    }).pipe(
+      map(result => {
+        console.log('GraphQL response:', result);
+        return result.data!.fetchBudgetDetailsForExistingUser;
+      })
+    );
   }
 }

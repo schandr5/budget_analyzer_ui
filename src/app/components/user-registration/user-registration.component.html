@@ -1,15 +1,36 @@
 <div class="registration-background">
   <div class="registration-form-container">
-    <div class="login-link">
-      Already a user? <a routerLink="/login">Log in</a>
+    <div class="form-header">
+      <div class="logo">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>Join Budget Analyzer</h2>
+      <p class="subtitle">Let's help you stay on budget and achieve your financial goals</p>
     </div>
 
-    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-      <h2>Let's help you stay on budget</h2>
+    <div class="login-link">
+      Already have an account? <a routerLink="/login" class="link">Sign in here</a>
+    </div>
 
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
       <div class="form-field">
         <label for="name">Full Name</label>
-        <input id="name" formControlName="name" placeholder="Enter your full name" />
+        <div class="input-wrapper">
+          <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input 
+            id="name" 
+            formControlName="name" 
+            placeholder="Enter your full name"
+            autocomplete="name"
+          />
+        </div>
         <div *ngIf="registrationForm?.get('name')?.invalid && registrationForm?.get('name')?.touched" class="error">
           Full name is required
         </div>
@@ -17,7 +38,18 @@
 
       <div class="form-field">
         <label for="userName">Username</label>
-        <input id="userName" formControlName="userName" placeholder="Choose a username" />
+        <div class="input-wrapper">
+          <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input 
+            id="userName" 
+            formControlName="userName" 
+            placeholder="Choose a unique username"
+            autocomplete="username"
+          />
+        </div>
         <div *ngIf="registrationForm?.get('userName')?.invalid && registrationForm?.get('userName')?.touched" class="error">
           Username is required
         </div>
@@ -25,13 +57,39 @@
 
       <div class="form-field">
         <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" placeholder="Create a password" />
+        <div class="input-wrapper">
+          <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="16" r="1" fill="currentColor"/>
+            <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input 
+            id="password" 
+            type="password" 
+            formControlName="password" 
+            placeholder="Create a strong password"
+            autocomplete="new-password"
+          />
+        </div>
         <div *ngIf="registrationForm?.get('password')?.invalid && registrationForm?.get('password')?.touched" class="error">
           Password is required
         </div>
       </div>
 
-      <button type="submit" [disabled]="registrationForm.invalid">Get Started</button>
+      <button type="submit" [disabled]="registrationForm.invalid" class="register-button">
+        <span>Create Account</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </form>
+
+    <div class="form-footer">
+      <p class="terms-text">
+        By creating an account, you agree to our 
+        <a href="#" class="link">Terms of Service</a> and 
+        <a href="#" class="link">Privacy Policy</a>
+      </p>
+    </div>
   </div>
 </div>

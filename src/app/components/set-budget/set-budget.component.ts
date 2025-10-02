@@ -5,7 +5,7 @@ import { Observable, filter } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BudgetSetupService } from '../../services/budget-setup.service';
+import { BudgetSetupService } from '../../services/budget.service';
 import moment from 'moment';
 
 @Component({
@@ -26,13 +26,13 @@ export class SetBudgetComponent {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private budgetSetupService: BudgetSetupService) {
-        this.budgetForm = this.fb.group({
-          budget_allocated: [null, [Validators.required, Validators.min(0)]],
-          start_date: [null, Validators.required],
-          end_date: [null, Validators.required],
-          budget_remaining: [{ value: 0, disabled: true }]
-        },
-       { validators: [this.endAfterStartValidator] });
+    this.budgetForm = this.fb.group({
+      budgetAllocated: [null, [Validators.required, Validators.min(0)]],
+      startDate: [null, Validators.required],
+      endDate: [null, Validators.required],
+      budgetRemaining: [{ value: 0, disabled: true }]
+    },
+   { validators: [this.endAfterStartValidator] });
     }
 
   ngOnInit() {
@@ -43,25 +43,25 @@ export class SetBudgetComponent {
     })
   }
 
-  get budget_allocated() {
-     return this.budgetForm.get('budget_allocated');
+  get budgetAllocated() {
+     return this.budgetForm.get('budgetAllocated');
   }
 
-  get start_date() { 
-    return this.budgetForm.get('start_date');  
+  get startDate() { 
+    return this.budgetForm.get('startDate');  
   }
 
-  get end_date() { 
-    return this.budgetForm.get('end_date');
+  get endDate() { 
+    return this.budgetForm.get('endDate');
   }
 
   get budgetRemaining() { 
-    return this.budgetForm.get('budget_remaining');
+    return this.budgetForm.get('budgetRemaining');
   }
 
   endAfterStartValidator(group: any) {
-    const s = group.get('start_date')?.value;
-    const e = group.get('end_date')?.value;
+    const s = group.get('startDate')?.value;
+    const e = group.get('endDate')?.value;
     if (!s || !e) return null;
     return new Date(e).getTime() < new Date(s).getTime() ? { dateRange: true } : null;
   }
@@ -75,21 +75,37 @@ export class SetBudgetComponent {
      let budgetInput = this.buildBudgetInput();
      console.log(budgetInput);
      this.budgetSetupService.setupBudgetForNewUser(budgetInput).subscribe((result : any) => {
-        console.log('Successfully added budegt details for the new user: ', result.budget_id);
+        console.log('Successfully added budegt details for the new user: ', result.budgetId);
      })
 
   }
 
   buildBudgetInput() : BudgetSetupInput {
-      const budgetAllocated = Number(this.budgetForm.get('budget_allocated')!.value) || 0;
-      const budgetRemaining = this.isNewUser ? budgetAllocated : Number(this.budgetForm.get('budget_remaining')!.value) || 0;
+      const budgetAllocated = Number(this.budgetForm.get('budgetAllocated')!.value) || 0;
+      const budgetRemaining = this.isNewUser ? budgetAllocated : Number(this.budgetForm.get('budgetRemaining')!.value) || 0;
 
       return { 
         id: this.sharedService.getUserDetails().id,
-        start_date: moment(this.budgetForm.get('start_date')?.value).format('YYYY-MM-DD'),
-        end_date: moment(this.budgetForm.get('end_date')?.value).format('YYYY-MM-DD'),
-        budget_allocated: budgetAllocated,
-        budget_remaining: budgetRemaining
+        startDate: moment(this.budgetForm.get('startDate')?.value).format('YYYY-MM-DD'),
+        endDate: moment(this.budgetForm.get('endDate')?.value).format('YYYY-MM-DD'),
+        budgetAllocated: budgetAllocated,
+        budgetRemaining: budgetRemaining
       };
+  }
+
+  calculateDays(): number {
+    const startDate = this.budgetForm.get('startDate')?.value;
+    const endDate = this.budgetForm.get('endDate')?.value;
+    
+    if (!startDate || !endDate) {
+      return 0;
+    }
+    
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const timeDiff = end.getTime() - start.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    
+    return daysDiff > 0 ? daysDiff : 0;
   }
 }

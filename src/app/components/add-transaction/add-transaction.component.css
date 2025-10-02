@@ -1,0 +1,378 @@
+.transaction-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+/* Header Section */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.welcome-section h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.budget-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.back-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.budget-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  min-width: 220px;
+  text-align: center;
+}
+
+.budget-label {
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.budget-amount {
+  color: #667eea;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Form Card */
+.form-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.form-card h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin: 0 0 1.5rem 0;
+  font-weight: 600;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.submit-group {
+  align-self: end;
+}
+
+.form-group label {
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  background: white;
+  color: #333;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input.invalid,
+.form-group select.invalid {
+  border-color: #ef4444;
+}
+
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  white-space: nowrap;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Table Card */
+.table-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.table-header h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.total-spent {
+  color: #666;
+  font-size: 1rem;
+}
+
+.total-spent strong {
+  color: #667eea;
+  font-size: 1.2rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #9ca3af;
+}
+
+.empty-state svg {
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.empty-state span {
+  font-size: 0.95rem;
+}
+
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transactions-table thead tr {
+  background: #f9fafb;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.transactions-table th {
+  text-align: left;
+  padding: 1rem;
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.transactions-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s;
+}
+
+.transactions-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.transactions-table td {
+  padding: 1rem;
+  color: #4b5563;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.category-badge[data-category="Food"] {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.category-badge[data-category="Transportation"] {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.category-badge[data-category="Entertainment"] {
+  background: #fce7f3;
+  color: #9f1239;
+}
+
+.category-badge[data-category="Shopping"] {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.category-badge[data-category="Bills"] {
+  background: #fed7aa;
+  color: #7c2d12;
+}
+
+.category-badge[data-category="Healthcare"] {
+  background: #ccfbf1;
+  color: #134e4a;
+}
+
+.category-badge[data-category="Education"] {
+  background: #e9d5ff;
+  color: #581c87;
+}
+
+.category-badge[data-category="Misc"] {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.amount-cell {
+  font-weight: 600;
+  color: #667eea;
+  font-size: 1.05rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .form-group.submit-group {
+    grid-column: span 2;
+    align-self: center;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .transaction-container {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .welcome-section h1 {
+    font-size: 2rem;
+  }
+
+  .budget-info {
+    align-items: stretch;
+  }
+
+  .budget-card {
+    width: 100%;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.submit-group {
+    grid-column: 1;
+  }
+
+  .table-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
