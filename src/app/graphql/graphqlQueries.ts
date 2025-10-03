@@ -36,7 +36,7 @@ export const SETUP_BUDGET_NEW_USER = gql `
 
 // Query to fetch budget details for existing user
 export const FETCH_BUDGET_DETAILS_FOR_EXISTING_USER = gql`
-    query fetcheBudgetDetails($id: ID!) {
+    query fetchBudgetDetails($id: ID!) {
         fetchBudgetDetailsForExistingUser(id: $id) {
             budgetId
             id
@@ -45,5 +45,33 @@ export const FETCH_BUDGET_DETAILS_FOR_EXISTING_USER = gql`
             budgetAllocated
             budgetRemaining
         }
+    }
+`;
+
+// Mutation to add a transaction
+export const ADD_TRANSACTION = gql`
+    mutation addNewTransaction($transactionInput: TransactionInput!) {
+        addTransaction(transactionInput: $transactionInput) {
+                transactionId
+                budgetId
+                transactionAmount
+                transactionDate
+                transactionCategory
+                transactionPriority       
+        }
+    }
+`;
+
+// Query to retrieve transactions for a budget
+export const RETRIEVE_TRANSACTIONS = gql`
+    query retrieveUserTransactions($budgetId: ID!) {
+        fetchTransactions(budgetId: $budgetId) {
+            transactionId
+            budgetId
+            transactionAmount
+            transactionDate
+            transactionCategory
+            transactionPriority    
+        }    
     }
 `;

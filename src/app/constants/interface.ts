@@ -37,10 +37,18 @@ export interface BudgetDetails {
 }
 
 export interface TransactionInput {
-    id: number;
+    budgetId: number;
     transactionAmount: number;
     transactionDate: string;
     transactionCategory: string;
+    budgetAllocated: number;
 }
 
-
+export interface TransactionOutput {
+    transactionId: number;
+    budgetId: number;
+    transactionAmount: number;
+    transactionDate: string;
+    transactionCategory: string;
+    transactionPriority: string;
+}

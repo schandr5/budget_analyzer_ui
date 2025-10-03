@@ -19,7 +19,6 @@ export class BudgetSetupService {
           budgetSetupInput: budgetSetupInput
         }
     }).pipe(map(result => result.data!.setupBudgetForNewUser));
-
   }
 
   fetchBudgetDetailsForExistingUser(id: number): Observable<BudgetDetails> {
@@ -29,7 +28,7 @@ export class BudgetSetupService {
       variables: {
         id: id
       },
-      fetchPolicy: 'network-only' // Force fresh data from backend
+      fetchPolicy: 'network-only'
     }).pipe(
       map(result => {
         console.log('GraphQL response:', result);

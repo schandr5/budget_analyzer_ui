@@ -101,6 +101,7 @@
             <th>Date</th>
             <th>Category</th>
             <th>Amount</th>
+            <th>Priority</th>
           </tr>
         </thead>
         <tbody>
@@ -113,6 +114,11 @@
               </span>
             </td>
             <td class="amount-cell">${{ transaction.transactionAmount.toFixed(2) }}</td>
+            <td>
+              <span class="priority-badge" [attr.data-priority]="transaction.transactionPriority">
+                {{ transaction.transactionPriority }}
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>

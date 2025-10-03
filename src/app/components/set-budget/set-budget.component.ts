@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
-import { BudgetSetupInput, UserDetails } from '../../constants/interface';
+import { BudgetDetails, BudgetSetupInput, UserDetails } from '../../constants/interface';
 import { Observable, filter } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -20,6 +20,7 @@ export class SetBudgetComponent {
   private userDetails! : UserDetails;
   budgetForm: FormGroup;  
   isNewUser: boolean = false;
+  private budgetDetails! : BudgetDetails;
 
   constructor(private sharedService: SharedService,
     private router: Router,
@@ -73,9 +74,9 @@ export class SetBudgetComponent {
      }
 
      let budgetInput = this.buildBudgetInput();
-     console.log(budgetInput);
      this.budgetSetupService.setupBudgetForNewUser(budgetInput).subscribe((result : any) => {
-        console.log('Successfully added budegt details for the new user: ', result.budgetId);
+        this.budgetDetails = result;
+        console.log('Successfully added budget details for the new user: ', result.budgetId);
      })
 
   }
