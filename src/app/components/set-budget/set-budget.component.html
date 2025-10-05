@@ -6,8 +6,8 @@
           <path d="M12 2V22M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6312 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6312 13.6815 18 14.5717 18 15.5C18 16.4283 17.6312 17.3185 16.9749 17.9749C16.3185 18.6312 15.4283 19 14.5 19H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <h2>Set Up Your Budget</h2>
-      <p class="subtitle">Configure your financial goals and start tracking your expenses</p>
+      <h2>{{planner.header.title}}</h2>
+      <p class="subtitle">{{planner.header.subtitle}}</p>
       
       <div class="financial-icons">
         <div class="icon-item">
@@ -16,7 +16,7 @@
             <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
             <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
           </svg>
-          <span>Smart Budgeting</span>
+          <span>{{planner.header.icons.smartBudgeting}}</span>
         </div>
         <div class="icon-item">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,23 +24,24 @@
             <path d="M8 7V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <path d="M16 7V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
-          <span>Track Expenses</span>
+          <span>{{planner.header.icons.trackExpenses}}</span>
         </div>
         <div class="icon-item">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <span>Financial Goals</span>
+          <span>{{planner.header.icons.financialGoals}}</span>
         </div>
       </div>
     </div>
 
     <div class="dashboard-link">
-      <a routerLink="/add-transaction" class="link">Manage Transactions →</a>
+      <a routerLink="/add-transaction" class="link">{{planner.navigation.manageTransactions}}</a>
     </div>
 
     <form [formGroup]="budgetForm" (ngSubmit)="onSubmit()" class="budget-form">
-      <div class="budget-summary" *ngIf="budgetForm.get('budgetAllocated')?.value">
+      <!-- Only show budget summary for new cycles, not when modifying -->
+      <div class="budget-summary" *ngIf="budgetForm.get('budgetAllocated')?.value && !isModifyingExisting">
         <div class="summary-card">
           <div class="summary-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -48,16 +49,17 @@
             </svg>
           </div>
           <div class="summary-content">
-            <div class="summary-label">Total Budget</div>
+            <div class="summary-label">{{planner.newCycle.summaryLabel}}</div>
             <div class="summary-amount">${{budgetForm.get('budgetAllocated')?.value | number:'1.2-2'}}</div>
           </div>
         </div>
       </div>
 
-      <div class="form-field">
+      <!-- New Budget Cycle: Show normal budget allocated field -->
+      <div class="form-field" *ngIf="!isModifyingExisting">
         <label for="budgetAllocated">
-          <span>Monthly Budget</span>
-          <span class="required">*</span>
+          <span>{{planner.newCycle.budgetLabel}}</span>
+          <span class="required">{{planner.required}}</span>
         </label>
         <div class="input-wrapper">
           <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,22 +69,75 @@
             id="budgetAllocated"
             type="number"
             formControlName="budgetAllocated"
-            placeholder="Enter your total budget amount"
+            [placeholder]="planner.placeholders.budgetAllocated"
             min="0"
             step="0.01"
           />
           <span class="currency-symbol">$</span>
         </div>
         <div *ngIf="budgetForm?.get('budgetAllocated')?.invalid && budgetForm?.get('budgetAllocated')?.touched" class="error">
-          Budget amount is required and must be greater than 0
+          {{planner.errors.budgetRequired}}
         </div>
       </div>
+
+      <!-- Existing Budget Cycle: Simplified view -->
+      <ng-container *ngIf="isModifyingExisting">
+        <div class="budget-modification-summary">
+          <div class="budget-row">
+            <span class="label">{{planner.modifyExisting.currentBudgetLabel}}</span>
+            <span class="value">${{currentBudget | number:'1.2-2'}}</span>
+          </div>
+          <div class="budget-row">
+            <span class="label">{{planner.modifyExisting.alreadySpentLabel}}</span>
+            <span class="value spent">- ${{totalSpent | number:'1.2-2'}}</span>
+          </div>
+          <div class="budget-row remaining">
+            <span class="label">{{planner.modifyExisting.currentRemainingLabel}}</span>
+            <span class="value">${{currentBudget - totalSpent | number:'1.2-2'}}</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="additionalBudget">
+            <span>{{planner.modifyExisting.increaseBudgetLabel}}</span>
+            <span class="required">{{planner.required}}</span>
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input
+              id="additionalBudget"
+              type="number"
+              formControlName="additionalBudget"
+              [placeholder]="planner.placeholders.additionalBudget"
+              min="0"
+              step="0.01"
+            />
+            <span class="currency-symbol">$</span>
+          </div>
+          <div *ngIf="budgetForm?.get('additionalBudget')?.invalid && budgetForm?.get('additionalBudget')?.touched" class="error">
+            {{planner.errors.additionalBudgetInvalid}}
+          </div>
+        </div>
+
+        <div class="budget-modification-summary new-totals">
+          <div class="budget-row highlight">
+            <span class="label">{{planner.modifyExisting.newBudgetTotalLabel}}</span>
+            <span class="value">${{budgetForm.get('budgetAllocated')?.value | number:'1.2-2'}}</span>
+          </div>
+          <div class="budget-row highlight">
+            <span class="label">{{planner.modifyExisting.newRemainingLabel}}</span>
+            <span class="value">${{budgetForm.get('budgetRemaining')?.value | number:'1.2-2'}}</span>
+          </div>
+        </div>
+      </ng-container>
 
       <div class="form-row">
         <div class="form-field half">
           <label for="startDate">
-            <span>Start Date</span>
-            <span class="required">*</span>
+            <span>{{planner.newCycle.startDateLabel}}</span>
+            <span class="required">{{planner.required}}</span>
           </label>
           <div class="input-wrapper">
             <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -98,13 +153,13 @@
             />
           </div>
           <div *ngIf="budgetForm?.get('startDate')?.invalid && budgetForm?.get('startDate')?.touched" class="error">
-            Start date is required
+            {{planner.errors.startDateRequired}}
           </div>
         </div>
         <div class="form-field half">
           <label for="endDate">
-            <span>End Date</span>
-            <span class="required">*</span>
+            <span>{{planner.newCycle.endDateLabel}}</span>
+            <span class="required">{{planner.required}}</span>
           </label>
           <div class="input-wrapper">
             <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +175,7 @@
             />
           </div>
           <div *ngIf="budgetForm?.get('endDate')?.invalid && budgetForm?.get('endDate')?.touched" class="error">
-            End date is required
+            {{planner.errors.endDateRequired}}
           </div>
         </div>
       </div>
@@ -131,11 +186,12 @@
             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
             <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <span>Budget period: {{calculateDays()}} days</span>
+          <span>{{planner.newCycle.budgetPeriodLabel}}: {{calculateDays()}} {{planner.newCycle.daysLabel}}</span>
         </div>
       </div>
 
-      <div class="form-field" *ngIf="!isNewUser">
+      <!-- Only show budget remaining field for non-new users and not when modifying (already shown in summary) -->
+      <div class="form-field" *ngIf="!isNewUser && !isModifyingExisting">
         <label for="budgetRemaining">Budget Remaining</label>
         <div class="input-wrapper">
           <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -163,7 +219,7 @@
       </div>
 
       <button type="submit" [disabled]="budgetForm.invalid" class="budget-button">
-        <span>Set Up Budget</span>
+        <span>{{ isModifyingExisting ? planner.buttons.updateBudget : planner.buttons.setupBudget }}</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>

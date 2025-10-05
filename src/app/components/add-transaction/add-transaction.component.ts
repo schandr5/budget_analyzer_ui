@@ -22,6 +22,7 @@ export class AddTransactionComponent implements OnInit {
   budgetRemaining: number = 0;
   budgetAllocated: number = 0;
   private budgetDetails! : BudgetDetails;
+  private isSameBudgetCycle: boolean = false;
   
   categories: string[] = [
     'Food',
@@ -31,6 +32,7 @@ export class AddTransactionComponent implements OnInit {
     'Bills',
     'Healthcare',
     'Education',
+    'Savings',
     'Misc'
   ];
 

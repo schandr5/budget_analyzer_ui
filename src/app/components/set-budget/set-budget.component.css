@@ -245,10 +245,12 @@ input {
   transition: var(--transition);
 }
 
-input[readonly] {
+input[readonly],
+input:disabled {
   background-color: var(--surface-color);
   color: var(--text-muted);
   cursor: not-allowed;
+  opacity: 0.7;
 }
 
 input:focus {
@@ -279,6 +281,62 @@ input::placeholder {
 
 .info-card svg {
   color: var(--primary-color);
+}
+
+.budget-modification-summary {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.budget-modification-summary.new-totals {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(5, 150, 105, 0.03));
+  border-color: var(--success-color);
+}
+
+.budget-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.budget-row:not(:last-child) {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.budget-row .label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.budget-row .value {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.budget-row.remaining .value {
+  color: var(--primary-color);
+  font-size: 1.125rem;
+}
+
+.budget-row .value.spent {
+  color: var(--error-color);
+}
+
+.budget-row.highlight .label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.budget-row.highlight .value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--success-color);
 }
 
 .help-text {

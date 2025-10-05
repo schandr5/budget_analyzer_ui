@@ -1,5 +1,6 @@
 import { ApplicationConfig, inject } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
@@ -8,7 +9,11 @@ import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient(), provideApollo(() => {
+  providers: [
+    provideRouter(routes), 
+    provideHttpClient(), 
+    provideAnimations(),
+    provideApollo(() => {
       const httpLink = inject(HttpLink);
 
       return {
@@ -17,7 +22,6 @@ export const appConfig: ApplicationConfig = {
         }),
         cache: new InMemoryCache(),
       };
-    })]
-
-
+    })
+  ]
 };

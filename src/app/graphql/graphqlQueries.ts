@@ -75,3 +75,17 @@ export const RETRIEVE_TRANSACTIONS = gql`
         }    
     }
 `;
+
+// Mutation to create new budget cycle (deactivates current and creates new)
+export const CREATE_NEW_BUDGET_CYCLE = gql`
+    mutation updateIsActiveForCurrentBudgetCycle($currentBudgetId: ID!, $budgetSetUpInput: BudgetSetupInput!) {
+        updateIsActiveForCurrentBudgetCycle(currentBudgetId: $currentBudgetId, budgetSetUpInput: $budgetSetUpInput) {
+            budgetId
+            id
+            startDate
+            endDate
+            budgetAllocated
+            budgetRemaining
+        }
+    }
+`;

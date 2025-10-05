@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { BudgetDetails, BudgetSetupInput } from '../constants/interface';
 import { map, Observable } from 'rxjs';
-import { FETCH_BUDGET_DETAILS_FOR_EXISTING_USER, SETUP_BUDGET_NEW_USER } from '../graphql/graphqlQueries';
+import { FETCH_BUDGET_DETAILS_FOR_EXISTING_USER, SETUP_BUDGET_NEW_USER, CREATE_NEW_BUDGET_CYCLE } from '../graphql/graphqlQueries';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +35,15 @@ export class BudgetSetupService {
         return result.data!.fetchBudgetDetailsForExistingUser;
       })
     );
+  }
+  
+  createNewBudgetCycle(currentBudgetId: number, newBudgetInput: BudgetSetupInput): Observable<BudgetDetails> {
+    return this.apollo.mutate<{updateIsActiveForCurrentBudgetCycle: BudgetDetails}>({
+      mutation: CREATE_NEW_BUDGET_CYCLE,
+      variables: {
+        currentBudgetId: currentBudgetId,
+        budgetSetUpInput: newBudgetInput  // Match backend: capital U
+      }
+    }).pipe(map(result => result.data!.updateIsActiveForCurrentBudgetCycle));
   }
 }

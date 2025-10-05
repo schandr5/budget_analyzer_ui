@@ -6,7 +6,7 @@
       <p class="subtitle">Track your spending and manage your budget</p>
     </div>
     <div class="budget-info">
-      <a routerLink="/budget-setup" class="back-link">← Back to Budget Setup</a>
+      <a [routerLink]="['/budget-setup']" [queryParams]="{ fromTransaction: 'true' }" class="back-link">← Back to Budget Setup</a>
       <div class="budget-card">
         <div class="budget-label">Budget Remaining</div>
         <div class="budget-amount">
