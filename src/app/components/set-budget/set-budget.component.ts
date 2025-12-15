@@ -194,17 +194,20 @@ export class SetBudgetComponent implements OnInit, OnDestroy {
        this.budgetSetupService.setupBudgetForNewUser(budgetInput).subscribe((result : any) => {
           this.sharedService.setBudgetDetails(result);
           console.log('Successfully updated budget: ', result.budgetId);
+          this.router.navigate(['/add-transaction'], { queryParams: { budgetSetup: 'true' } });
        });
      } else if (this.sharedService.getBudgetDetails()) {
        const currentBudgetId = this.sharedService.getBudgetDetails().budgetId;
        this.budgetSetupService.createNewBudgetCycle(currentBudgetId, budgetInput).subscribe((result : any) => {
           this.sharedService.setBudgetDetails(result);
           console.log('Successfully created new budget cycle: ', result.budgetId);
+          this.router.navigate(['/add-transaction'], { queryParams: { budgetSetup: 'true' } });
        });
      } else {
        this.budgetSetupService.setupBudgetForNewUser(budgetInput).subscribe((result : any) => {
           this.sharedService.setBudgetDetails(result);
           console.log('Successfully added budget details for new user: ', result.budgetId);
+          this.router.navigate(['/add-transaction'], { queryParams: { budgetSetup: 'true' } });
        });
      }
   }
@@ -217,7 +220,7 @@ export class SetBudgetComponent implements OnInit, OnDestroy {
         : budgetAllocated;                  
 
       return { 
-        id: this.sharedService.getUserDetails().id,
+        user_id: this.sharedService.getUserDetails().userId,
         startDate: moment(this.budgetForm.get('startDate')?.value).format('YYYY-MM-DD'),
         endDate: moment(this.budgetForm.get('endDate')?.value).format('YYYY-MM-DD'),
         budgetAllocated: budgetAllocated,

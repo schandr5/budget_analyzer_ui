@@ -1,3 +1,10 @@
+// TransactionPriority enum matching backend schema
+export enum TransactionPriority {
+    HIGH = 'HIGH',
+    MEDIUM = 'MEDIUM',
+    LOW = 'LOW'
+}
+
 // addUser input object
 export interface UserInput {
     name: string;
@@ -7,7 +14,7 @@ export interface UserInput {
 
 // Response type from received from backend for addUser query
 export interface UserDetails {
-    id: number;
+    userId: number;
     userName: string;
 }
 
@@ -19,7 +26,7 @@ export interface Credentials {
 
 // Budget setup details for new user
 export interface BudgetSetupInput {
-    id: number;
+    user_id: number;
     startDate: string;
     endDate: string;
     budgetAllocated: number;
@@ -29,11 +36,12 @@ export interface BudgetSetupInput {
 // Response type from backend for setupBudget query.
 export interface BudgetDetails {
     budgetId : number;
-    id: number;
+    userId: number;
     startDate: string;
     endDate: string;
     budgetAllocated: number;
     budgetRemaining: number;
+    isActive: boolean;
 }
 
 export interface TransactionInput {
@@ -50,5 +58,5 @@ export interface TransactionOutput {
     transactionAmount: number;
     transactionDate: string;
     transactionCategory: string;
-    transactionPriority: string;
+    transactionPriority: TransactionPriority;
 }

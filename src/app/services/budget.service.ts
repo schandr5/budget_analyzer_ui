@@ -18,7 +18,11 @@ export class BudgetSetupService {
         variables: {
           budgetSetupInput: budgetSetupInput
         }
-    }).pipe(map(result => result.data!.setupBudgetForNewUser));
+    }).pipe(map(result => {
+      const budgetDetails = result.data!.setupBudgetForNewUser;
+      // Ensure isActive is set to true for new budgets
+      return { ...budgetDetails, isActive: true };
+    }));
   }
 
   fetchBudgetDetailsForExistingUser(id: number): Observable<BudgetDetails> {
@@ -44,6 +48,10 @@ export class BudgetSetupService {
         currentBudgetId: currentBudgetId,
         budgetSetUpInput: newBudgetInput  // Match backend: capital U
       }
-    }).pipe(map(result => result.data!.updateIsActiveForCurrentBudgetCycle));
+    }).pipe(map(result => {
+      const budgetDetails = result.data!.updateIsActiveForCurrentBudgetCycle;
+      // Ensure isActive is set to true for new budget cycles
+      return { ...budgetDetails, isActive: true };
+    }));
   }
 }

@@ -1,4 +1,16 @@
 <div class="transaction-container">
+  <!-- Budget Setup Success Banner -->
+  <div *ngIf="showBudgetSetupBanner" class="budget-setup-banner">
+    <div class="banner-content">
+      <div class="banner-icon">✓</div>
+      <div class="banner-text">
+        <strong>Budget has been set up!</strong>
+        <span>Let's add some transactions to start tracking your spending.</span>
+      </div>
+      <button class="banner-close" (click)="dismissBanner()" aria-label="Close banner">×</button>
+    </div>
+  </div>
+
   <!-- Header Section -->
   <div class="header">
     <div class="welcome-section">

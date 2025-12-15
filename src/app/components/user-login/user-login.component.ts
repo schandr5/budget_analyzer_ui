@@ -34,7 +34,7 @@ export class UserLoginComponent {
         next: (res) => {
           console.log('User login completed successfully: ' + res.userName);
           this.sharedService.setUserDetails(res);
-          this.budgetSetupService.fetchBudgetDetailsForExistingUser(res.id).subscribe({
+          this.budgetSetupService.fetchBudgetDetailsForExistingUser(res.userId).subscribe({
             next: (budgetRes) => {
               console.log('Budget details fetched successfully:', budgetRes);
               if (budgetRes) {

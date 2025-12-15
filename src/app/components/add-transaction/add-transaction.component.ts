@@ -3,7 +3,7 @@ import { SharedService } from '../../services/shared.service';
 import { UserDetails, TransactionInput, BudgetDetails, TransactionOutput } from '../../constants/interface';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 import { TransactionService } from '../../services/transaction.service';
     
@@ -23,6 +23,7 @@ export class AddTransactionComponent implements OnInit {
   budgetAllocated: number = 0;
   private budgetDetails! : BudgetDetails;
   private isSameBudgetCycle: boolean = false;
+  showBudgetSetupBanner: boolean = false;
   
   categories: string[] = [
     'Food',
@@ -39,7 +40,8 @@ export class AddTransactionComponent implements OnInit {
   constructor(
     private sharedService: SharedService,
     private fb: FormBuilder,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private route: ActivatedRoute
   ) {
     this.userDetails = this.sharedService.getUserDetails();
     
@@ -59,6 +61,16 @@ export class AddTransactionComponent implements OnInit {
   ngOnInit() {
     this.transactionForm.patchValue({
       transactionDate: moment().format('YYYY-MM-DD')
+    });
+
+    // Check if coming from budget setup
+    this.route.queryParams.subscribe(params => {
+      if (params['budgetSetup'] === 'true') {
+        this.showBudgetSetupBanner = true;
+        setTimeout(() => {
+          this.showBudgetSetupBanner = false;
+        }, 5000);
+      }
     });
 
     this.transactionService.retrieveTransations(this.budgetDetails.budgetId).subscribe({
@@ -120,5 +132,9 @@ export class AddTransactionComponent implements OnInit {
 
   formatDate(dateString: string): string {
     return moment(dateString).format('MMM DD, YYYY');
+  }
+
+  dismissBanner(): void {
+    this.showBudgetSetupBanner = false;
   }
 }
