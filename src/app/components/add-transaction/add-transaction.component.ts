@@ -76,8 +76,6 @@ export class AddTransactionComponent implements OnInit {
     this.transactionService.retrieveTransations(this.budgetDetails.budgetId).subscribe({
       next: (res) => {
         this.transactions = res;
-        const totalSpent = this.getTotalSpent();
-        this.budgetRemaining = this.budgetAllocated - totalSpent;
         console.log('Transactions updated:', res);
       },
       error: (err) => {
@@ -114,6 +112,11 @@ export class AddTransactionComponent implements OnInit {
     this.transactionService.addTransaction(newTransaction).subscribe({
       next: (res) => {
         console.log('Transaction added:', res);
+        // Use budgetRemaining from transaction response (backend-calculated)
+        this.budgetRemaining = res.budgetRemaining;
+        // Update budgetDetails in shared service to keep it in sync
+        this.budgetDetails.budgetRemaining = res.budgetRemaining;
+        this.sharedService.setBudgetDetails(this.budgetDetails);
         this.transactionForm.reset({
           transactionDate: moment().format('YYYY-MM-DD'),
           transactionCategory: '',
@@ -137,4 +140,6 @@ export class AddTransactionComponent implements OnInit {
   dismissBanner(): void {
     this.showBudgetSetupBanner = false;
   }
+
+  
 }

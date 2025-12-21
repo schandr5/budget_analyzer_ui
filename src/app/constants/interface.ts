@@ -59,4 +59,5 @@ export interface TransactionOutput {
     transactionDate: string;
     transactionCategory: string;
     transactionPriority: TransactionPriority;
+    budgetRemaining: number;
 }

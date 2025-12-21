@@ -59,7 +59,8 @@ export const ADD_TRANSACTION = gql`
                 transactionAmount
                 transactionDate
                 transactionCategory
-                transactionPriority       
+                transactionPriority
+                budgetRemaining       
         }
     }
 `;
