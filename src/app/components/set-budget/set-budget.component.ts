@@ -26,6 +26,7 @@ export class SetBudgetComponent implements OnInit, OnDestroy {
   isModifyingExisting: boolean = false;
   currentBudget: number = 0;
   totalSpent: number = 0;
+  minStartDate: string = '';
   
   // Expose planner labels to template
   planner = BUDGET_PLANNER;
@@ -155,6 +156,16 @@ export class SetBudgetComponent implements OnInit, OnDestroy {
       this.budgetForm.get('budgetAllocated')?.enable();
       this.budgetForm.get('additionalBudget')?.disable();
       this.budgetForm.get('additionalBudget')?.clearValidators();
+      
+      // Set minimum start date to day after current cycle ends
+      if (existingBudget && existingBudget.endDate) {
+        const currentEndDate = new Date(existingBudget.endDate);
+        currentEndDate.setDate(currentEndDate.getDate() + 1); // Day after current cycle ends
+        this.minStartDate = moment(currentEndDate).format('YYYY-MM-DD');
+      } else {
+        // If no existing budget, allow any date (for new users)
+        this.minStartDate = '';
+      }
     }
   }
 
@@ -188,26 +199,22 @@ export class SetBudgetComponent implements OnInit, OnDestroy {
      }
 
      let budgetInput = this.buildBudgetInput();
-     
+
      if (this.isModifyingExisting) {
-       // Still need to update this to use the correct mutation
-       this.budgetSetupService.setupBudgetForNewUser(budgetInput).subscribe((result : any) => {
-          this.sharedService.setBudgetDetails(result);
-          console.log('Successfully updated budget: ', result.budgetId);
-          this.router.navigate(['/add-transaction'], { queryParams: { budgetSetup: 'true' } });
+       const currentBudgetId = this.sharedService.getBudgetDetails().budgetId;
+       const additionalBudget = Number(this.budgetForm.get('additionalBudget')?.value) || 0;
+       this.budgetSetupService.modifyExistingBudgetCycleWithinCurrentCycle(currentBudgetId, additionalBudget).subscribe((result : any) => {
+          this.handleBudgetSuccess(result, 'Successfully updated budget: ');
        });
      } else if (this.sharedService.getBudgetDetails()) {
-       const currentBudgetId = this.sharedService.getBudgetDetails().budgetId;
+      const currentBudgetId = this.sharedService.getBudgetDetails().budgetId;
+
        this.budgetSetupService.createNewBudgetCycle(currentBudgetId, budgetInput).subscribe((result : any) => {
-          this.sharedService.setBudgetDetails(result);
-          console.log('Successfully created new budget cycle: ', result.budgetId);
-          this.router.navigate(['/add-transaction'], { queryParams: { budgetSetup: 'true' } });
+          this.handleBudgetSuccess(result, 'Successfully created new budget cycle: ');
        });
      } else {
        this.budgetSetupService.setupBudgetForNewUser(budgetInput).subscribe((result : any) => {
-          this.sharedService.setBudgetDetails(result);
-          console.log('Successfully added budget details for new user: ', result.budgetId);
-          this.router.navigate(['/add-transaction'], { queryParams: { budgetSetup: 'true' } });
+          this.handleBudgetSuccess(result, 'Successfully added budget details for new user: ');
        });
      }
   }
@@ -242,5 +249,11 @@ export class SetBudgetComponent implements OnInit, OnDestroy {
     const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
     
     return daysDiff > 0 ? daysDiff : 0;
+  }
+
+  private handleBudgetSuccess(result: BudgetDetails, successMessage: string): void {
+    this.sharedService.setBudgetDetails(result);
+    console.log(successMessage, result.budgetId);
+    this.router.navigate(['/add-transaction'], { queryParams: { budgetSetup: 'true' } });
   }
 }

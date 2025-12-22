@@ -150,7 +150,11 @@
               id="startDate"
               type="date"
               formControlName="startDate"
+              [min]="minStartDate"
             />
+          </div>
+          <div *ngIf="minStartDate && !isModifyingExisting" class="help-text">
+            New cycle must start after current cycle ends ({{minStartDate}})
           </div>
           <div *ngIf="budgetForm?.get('startDate')?.invalid && budgetForm?.get('startDate')?.touched" class="error">
             {{planner.errors.startDateRequired}}

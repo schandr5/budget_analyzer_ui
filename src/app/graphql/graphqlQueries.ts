@@ -93,3 +93,18 @@ export const CREATE_NEW_BUDGET_CYCLE = gql`
         }
     }
 `;
+
+// Mutation to create new budget cycle (deactivates current and creates new)
+export const MODIFY_EXISTING_BUDGET_CYCLE_WITHIN_CURRENT_CYCLE = gql`
+    mutation modifyBudgetForExistingCycle($currentBudgetId: ID!, $additionalBudgetAllocated: Long!) {
+        modifyBudgetForExistingCycle(currentBudgetId: $currentBudgetId, additionalBudgetAllocated: $additionalBudgetAllocated) {
+            budgetId
+            userId
+            startDate
+            endDate
+            budgetAllocated
+            budgetRemaining
+            isActive
+        }
+    }
+`;

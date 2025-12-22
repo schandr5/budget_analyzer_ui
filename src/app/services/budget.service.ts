@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { BudgetDetails, BudgetSetupInput } from '../constants/interface';
 import { map, Observable } from 'rxjs';
-import { FETCH_BUDGET_DETAILS_FOR_EXISTING_USER, SETUP_BUDGET_NEW_USER, CREATE_NEW_BUDGET_CYCLE } from '../graphql/graphqlQueries';
+import { FETCH_BUDGET_DETAILS_FOR_EXISTING_USER, SETUP_BUDGET_NEW_USER, CREATE_NEW_BUDGET_CYCLE, MODIFY_EXISTING_BUDGET_CYCLE_WITHIN_CURRENT_CYCLE } from '../graphql/graphqlQueries';
 
 @Injectable({
   providedIn: 'root'
@@ -46,12 +46,25 @@ export class BudgetSetupService {
       mutation: CREATE_NEW_BUDGET_CYCLE,
       variables: {
         currentBudgetId: currentBudgetId,
-        budgetSetUpInput: newBudgetInput  // Match backend: capital U
+        budgetSetUpInput: newBudgetInput
       }
     }).pipe(map(result => {
       const budgetDetails = result.data!.updateIsActiveForCurrentBudgetCycle;
       // Ensure isActive is set to true for new budget cycles
       return { ...budgetDetails, isActive: true };
+    }));
+  }
+
+  modifyExistingBudgetCycleWithinCurrentCycle(currentBudgetId: number, additionalBudgetAllocated: number): Observable<BudgetDetails> {
+    return this.apollo.mutate<{modifyBudgetForExistingCycle: BudgetDetails}>({
+      mutation: MODIFY_EXISTING_BUDGET_CYCLE_WITHIN_CURRENT_CYCLE,
+      variables: {
+        currentBudgetId: currentBudgetId,
+        additionalBudgetAllocated: additionalBudgetAllocated
+      }
+    }).pipe(map(result => {
+      const budgetDetails = result.data!.modifyBudgetForExistingCycle;
+      return budgetDetails
     }));
   }
 }
