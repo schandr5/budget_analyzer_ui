@@ -69,10 +69,19 @@
             formControlName="transactionAmount"
             placeholder="0.00"
             step="0.01"
-            [class.invalid]="transactionAmount?.invalid && transactionAmount?.touched">
+            [class.invalid]="transactionAmount?.invalid && transactionAmount?.touched"
+            [class.warning]="exceedsBudgetWarning">
+          <!-- Real-time budget warning alert -->
+          <div class="budget-warning-alert" *ngIf="exceedsBudgetWarning && transactionAmount?.value">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>This amount exceeds your remaining budget of ${{ budgetRemaining.toFixed(2) }}</span>
+          </div>
           <div class="error-message" *ngIf="transactionAmount?.invalid && transactionAmount?.touched">
             <span *ngIf="transactionAmount?.errors?.['required']">Amount is required</span>
             <span *ngIf="transactionAmount?.errors?.['min']">Amount must be greater than 0</span>
+            <span *ngIf="transactionAmount?.errors?.['exceedsBudget']">Transaction amount exceeds remaining budget (${{ budgetRemaining.toFixed(2) }})</span>
           </div>
         </div>
 

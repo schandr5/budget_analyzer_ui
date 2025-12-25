@@ -208,7 +208,6 @@ export class SetBudgetComponent implements OnInit, OnDestroy {
        });
      } else if (this.sharedService.getBudgetDetails()) {
       const currentBudgetId = this.sharedService.getBudgetDetails().budgetId;
-
        this.budgetSetupService.createNewBudgetCycle(currentBudgetId, budgetInput).subscribe((result : any) => {
           this.handleBudgetSuccess(result, 'Successfully created new budget cycle: ');
        });

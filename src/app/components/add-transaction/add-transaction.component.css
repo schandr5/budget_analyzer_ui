@@ -220,6 +220,11 @@
   border-color: #ef4444;
 }
 
+.form-group input.warning {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
 .form-group select {
   cursor: pointer;
   appearance: none;
@@ -233,6 +238,25 @@
   color: #ef4444;
   font-size: 0.85rem;
   margin-top: 0.25rem;
+}
+
+.budget-warning-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  color: #92400e;
+  font-size: 0.875rem;
+  animation: slideDown 0.2s ease-out;
+}
+
+.budget-warning-alert svg {
+  flex-shrink: 0;
+  color: #f59e0b;
 }
 
 .submit-btn {

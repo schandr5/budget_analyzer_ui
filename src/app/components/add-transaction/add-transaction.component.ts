@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 import { TransactionService } from '../../services/transaction.service';
+import { TRANSACTION_CATEGORIES } from '../../constants/budget-planner.constants';
     
 @Component({
   selector: 'app-add-transaction',
@@ -16,26 +17,15 @@ import { TransactionService } from '../../services/transaction.service';
 })
 export class AddTransactionComponent implements OnInit {
 
-  private userDetails! : UserDetails;
   transactionForm: FormGroup;
   transactions: TransactionOutput[] = [];
   budgetRemaining: number = 0;
   budgetAllocated: number = 0;
   private budgetDetails! : BudgetDetails;
-  private isSameBudgetCycle: boolean = false;
   showBudgetSetupBanner: boolean = false;
+  exceedsBudgetWarning: boolean = false;
   
-  categories: string[] = [
-    'Food',
-    'Transportation',
-    'Entertainment',
-    'Shopping',
-    'Bills',
-    'Healthcare',
-    'Education',
-    'Savings',
-    'Misc'
-  ];
+  categories: string[] = TRANSACTION_CATEGORIES;
 
   constructor(
     private sharedService: SharedService,
@@ -43,12 +33,21 @@ export class AddTransactionComponent implements OnInit {
     private transactionService: TransactionService,
     private route: ActivatedRoute
   ) {
-    this.userDetails = this.sharedService.getUserDetails();
     
     this.transactionForm = this.fb.group({
       transactionDate: [null, Validators.required],
       transactionCategory: ['', Validators.required],
-      transactionAmount: [null, [Validators.required, Validators.min(0.01)]]
+      transactionAmount: [null, [
+        Validators.required, 
+        Validators.min(0.01),
+        this.budgetLimitValidator.bind(this)
+      ]]
+    });
+
+    // Real-time validation: check budget limit as user types
+    this.transactionForm.get('transactionAmount')?.valueChanges.subscribe(value => {
+      const amount = Number(value);
+      this.exceedsBudgetWarning = amount > 0 && amount > this.budgetRemaining;
     });
 
     this.budgetDetails = this.sharedService.getBudgetDetails();
@@ -117,6 +116,9 @@ export class AddTransactionComponent implements OnInit {
         // Update budgetDetails in shared service to keep it in sync
         this.budgetDetails.budgetRemaining = res.budgetRemaining;
         this.sharedService.setBudgetDetails(this.budgetDetails);
+        // Reset warning flag and re-validate transaction amount field with new budget remaining
+        this.exceedsBudgetWarning = false;
+        this.transactionForm.get('transactionAmount')?.updateValueAndValidity();
         this.transactionForm.reset({
           transactionDate: moment().format('YYYY-MM-DD'),
           transactionCategory: '',
@@ -141,5 +143,16 @@ export class AddTransactionComponent implements OnInit {
     this.showBudgetSetupBanner = false;
   }
 
-  
+  private budgetLimitValidator(control: any): { [key: string]: any } | null {
+    const transactionAmount = Number(control?.value);
+    if (!transactionAmount || !this.budgetRemaining) {
+      return null;
+    }
+    
+    if (transactionAmount > this.budgetRemaining) {
+      return { exceedsBudget: true };
+    }
+    
+    return null;
+  }
 }

@@ -67,3 +67,31 @@ export const BUDGET_PLANNER = {
   required: '*'
 };
 
+// Transaction categories
+export const TRANSACTION_CATEGORIES: string[] = [
+  'Food & groceries',
+  'Dining out',
+  'Rent or mortgage',
+  'Utilities',
+  'Internet and mobile',
+  'Transportation',
+  'Fuel',
+  'Public transport',
+  'Insurance',
+  'Healthcare',
+  'Medications',
+  'Shopping',
+  'Clothing',
+  'Personal care',
+  'Entertainment',
+  'Subscriptions',
+  'Travel',
+  'Education',
+  'Childcare',
+  'Gifts & donations',
+  'Savings',
+  'Investments',
+  'Debt payments',
+  'Miscellaneous'
+];
+
