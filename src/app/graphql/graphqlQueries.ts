@@ -108,3 +108,9 @@ export const MODIFY_EXISTING_BUDGET_CYCLE_WITHIN_CURRENT_CYCLE = gql`
         }
     }
 `;
+
+export const FETCH_AI_INSIGHTS = gql`
+    query fetchAiInsights($budgetId: ID!, $prompt: String!) {
+        fetchInsights(budgetId: $budgetId, prompt: $prompt)
+    }
+`;

@@ -1,0 +1,47 @@
+<div class="insight-page">
+  <div class="header">
+    <div>
+      <p class="eyebrow">AI Insights</p>
+      <h2>Ask a question about your spending</h2>
+      <p class="subhead">Enter a prompt to generate insights. Results will show below.</p>
+    </div>
+    <div class="actions">
+      <button class="ghost" type="button" (click)="onCancel()">Cancel</button>
+      <button class="primary" type="submit" form="insightForm" [disabled]="form.invalid || isLoading">
+        {{ isLoading ? 'Generating...' : 'Submit' }}
+      </button>
+    </div>
+  </div>
+
+  <form id="insightForm" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="card">
+      <label for="prompt" class="label">Your prompt</label>
+      <textarea
+        id="prompt"
+        formControlName="prompt"
+        rows="4"
+        placeholder="E.g., Where did I overspend last month?">
+      </textarea>
+      <div class="hint">Keep it short and focused. Example: “Summarize my top 3 spending categories.”</div>
+    </div>
+  </form>
+
+  <div class="card output">
+    <div class="output-header">
+      <div>
+        <p class="eyebrow">AI Insight</p>
+        <h3>Result</h3>
+      </div>
+      <div class="status" [class.loading]="isLoading">
+        <span *ngIf="isLoading">Working...</span>
+        <span *ngIf="!isLoading">Ready</span>
+      </div>
+    </div>
+    <div class="output-body">
+      <p *ngIf="!insightText && !isLoading" class="placeholder">Your insight will appear here.</p>
+      <p *ngIf="isLoading" class="placeholder">Generating insight...</p>
+      <div *ngIf="insightText && !isLoading" class="insight-text">{{ insightText }}</div>
+    </div>
+  </div>
+</div>
+

@@ -16,6 +16,9 @@
     <div class="welcome-section">
       <h1>Transaction Management</h1>
       <p class="subtitle">Track your spending and manage your budget</p>
+      <button class="ai-btn" type="button" [routerLink]="['/ai-insights']">
+        AI Insights
+      </button>
     </div>
     <div class="budget-info">
       <a [routerLink]="['/budget-setup']" [queryParams]="{ fromTransaction: 'true' }" class="back-link">← Back to Budget Setup</a>
