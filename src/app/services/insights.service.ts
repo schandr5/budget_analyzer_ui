@@ -16,6 +16,6 @@ export class InsightsService {
       query: FETCH_AI_INSIGHTS,
       variables: { budgetId, prompt },
       fetchPolicy: 'network-only',
-    }).pipe(map(res => res.data.fetchInsights));
+    }).pipe(map(res => res.data!.fetchInsights));
   }
 }

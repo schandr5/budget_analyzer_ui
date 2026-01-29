@@ -60,7 +60,13 @@
               "buildTarget": "budget_analyzer_ui:build:production"
             },
             "development": {
-              "buildTarget": "budget_analyzer_ui:build:development"
+              "buildTarget": "budget_analyzer_ui:build:development",
+              "prebundle": {
+                "exclude": [
+                  "apollo-angular",
+                  "@apollo/client"
+                ]
+              }
             }
           },
           "defaultConfiguration": "development"
